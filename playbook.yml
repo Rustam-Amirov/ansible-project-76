@@ -1,6 +1,12 @@
 
-- hosts: webservers
+- hosts: all
   become: true
+  roles: 
+    - role: geerlingguy.pip 
+      vars:
+        pip_install_packages:
+          - name: docker
+
   tasks:
     - name: Install required system packages
       apt:
