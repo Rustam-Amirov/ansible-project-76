@@ -1,6 +1,11 @@
 
 - hosts: all
   become: true
+  pre_tasks:
+    - name: Update Linux
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
   roles: 
     - role: geerlingguy.pip 
       vars:
@@ -45,6 +50,29 @@
         name: docker
         state: started
         enabled: yes
+
+    - name: Template Docker-compose
+      ansible.builtin.template:
+        src: .env
+        dest: '.env' 
+
+    - name: Copy docker compose file
+      ansible.builtin.copy:
+        src: docker-compose.yml
+        dest: 'docker-compose.yml'
+
+    - name: Copy Makefile compose file
+      ansible.builtin.copy:
+        src: Makefile
+        dest: 'Makefile'
+
+    - name: Build container
+      ansible.builtin.command:
+        cmd: make compose-build 
+      
+    - name: Run container
+      ansible.builtin.command:
+        cmd: make compose
 
   handlers:
       - name: restart docker
