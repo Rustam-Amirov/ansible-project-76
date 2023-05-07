@@ -64,14 +64,10 @@
         mode: 0644
 
     - name: Build container
-      ansible.builtin.command:
-        cmd: make compose-build 
-        changed_when: false
+      ansible.builtin.command: make compose-build 
       
     - name: Run container
-      ansible.builtin.command:
-        cmd: make compose
-        changed_when: false
+      ansible.builtin.command: make compose
 
   handlers:
       - name: restart docker
