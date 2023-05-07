@@ -45,12 +45,6 @@
         - docker-ce-cli
         - containerd.io
 
-    - name: Start docker
-      service:
-        name: docker
-        state: started
-        enabled: yes
-
     - name: Template Docker-compose
       ansible.builtin.template:
         src: .env
