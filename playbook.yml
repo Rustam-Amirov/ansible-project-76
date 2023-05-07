@@ -38,7 +38,7 @@
     - name: Install docker-ce
       apt:
         name: "{{ item }}"
-        state: latest
+        state: present
         update_cache: true
       loop:
         - docker-ce
@@ -49,24 +49,29 @@
       ansible.builtin.template:
         src: .env
         dest: '.env' 
+        mode: 0644
 
     - name: Copy docker compose file
       ansible.builtin.copy:
         src: docker-compose.yml
         dest: 'docker-compose.yml'
+        mode: 0644
 
     - name: Copy Makefile compose file
       ansible.builtin.copy:
         src: Makefile
         dest: 'Makefile'
+        mode: 0644
 
     - name: Build container
       ansible.builtin.command:
         cmd: make compose-build 
+        changed_when: false
       
     - name: Run container
       ansible.builtin.command:
         cmd: make compose
+        changed_when: false
 
   handlers:
       - name: restart docker
